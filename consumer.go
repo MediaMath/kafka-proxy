@@ -74,12 +74,13 @@ func Consume(client HTTPClient, baseURL string, topic string, partition int32, o
 
 	resp := []*Message{}
 	status, body, err := doJSON(client, req, &resp)
-	if err != nil {
-		return nil, err
-	}
 
 	if status != http.StatusOK {
 		return nil, fmt.Errorf("%v:%s", status, body)
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("%v:%s:%v", status, body, err)
 	}
 
 	return resp, nil
